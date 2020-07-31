@@ -13,20 +13,15 @@ import (
 
 const (
 	dbName         = "test"
-	collectionName = dbName
+	userCollection = "users"
 )
 
 func main() {
 	ctx := context.Background()
 	client := getClient()
 	defer client.Disconnect(ctx)
-	res, err := client.ListDatabases(ctx, bson.M{})
-	if err != nil {
-		log.Fatalln()
-	}
-	for _, database := range res.Databases {
-		log.Println(database.Name)
-	}
+	db := client.Database(dbName)
+	queryMany(ctx, db)
 }
 
 func getClient() *mongo.Client {
@@ -48,4 +43,14 @@ func getClient() *mongo.Client {
 		log.Fatal(err)
 	}
 	return client
+}
+
+func listDatabases(ctx context.Context, client *mongo.Client) {
+	res, err := client.ListDatabases(ctx, bson.M{})
+	if err != nil {
+		log.Fatalln()
+	}
+	for _, database := range res.Databases {
+		log.Println(database.Name)
+	}
 }

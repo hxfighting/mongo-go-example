@@ -21,19 +21,19 @@ func main() {
 	client := getClient()
 	defer client.Disconnect(ctx)
 	db := client.Database(dbName)
-	queryMany(ctx, db)
+	transaction(ctx, db)
 }
 
 func getClient() *mongo.Client {
 	clientOption := options.Client()
 	clientOption.ApplyURI("mongodb://test:test@127.0.0.1:27017")
-	//clientOption.SetReplicaSet("rs1")
+	clientOption.SetReplicaSet("rs1")
 
 	client, err := mongo.NewClient(clientOption)
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
 	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)

@@ -9,5 +9,5 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: test
     ports:
       - "27017:27017"
-#    command:
-#      --replSet rs1
+    command:
+      --replSet rs1
